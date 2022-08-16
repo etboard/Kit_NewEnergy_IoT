@@ -11,6 +11,7 @@
 #ifndef APP_CONFIG_H
 #define APP_CONFIG_H
 
+#include <Arduino.h>
 #include "lib/etboard_com.h"
 #include "lib/etboard_simple_mqtt.h"
 #include "lib/etboard_oled_u8g2.h"
@@ -25,6 +26,7 @@ class APP_CONFIG
 {
 
   private:      
+    String lineString[3];
   
   public:          
     //const char* board_hardware_verion = "ETBoard_V1.1";
@@ -42,8 +44,8 @@ class APP_CONFIG
     void setup(void);    
     void fast_blink_led(void);
     void normal_blink_led(void); 
-    void display_BI(void);
-
+    void display_BI(void);	
+ 
     void dg_Write(int pin, int value);
     void update_digital_value();
     bool isChanged_digital_value(void);
