@@ -2,9 +2,9 @@
  * FileName     : Renewable_Energy_IoT
  * Description  : 이티보드 스마트 신재생 에너지 코딩 키트(IoT)
  * Author       : SCS
- * Created Date : 2022.08.06
+ * Created Date : 2022.08.18
  * Reference    : 
- * Modified     : 2022.08.10 : SCS
+ * Modified     : 2022.08.19 : LSC
  * Modified     : 
 ******************************************************************************************/
 const char* board_hardware_verion = "ETBoard_V1.1";
@@ -27,8 +27,8 @@ APP_CONFIG app;
 //==========================================================================================
 // 전역 변수 선언                                   
 //==========================================================================================
-float Solar_Voltage_Value;                          // 태양광 발전기 값(V)
-float Windturbine_Voltage_Value;                    // 풍력 발전기 값(V)
+float Solar_Voltage_Value;                        // 태양광 발전기 값(V)
+float Windturbine_Voltage_Value;                  // 풍력 발전기 값(V)
 const double c_Value = 0.001221245421;
 float Solar_Max = 0;
 float Wind_Max = 0;
@@ -65,7 +65,6 @@ void loop()                                       // 반복 루틴
 //==========================================================================================
 //  (권장 사항) 이 함수를 가능하면 수정하지 마십시오 !!! 
 //  do_sensing_process(), do_automatic_process(), send_sensor_value(), 
-//  send_digital_output_value()를 수정하십시오.
 //------------------------------------------------------------------------------------------
 {
   //----------------------------------------------------------------------------------------
@@ -89,9 +88,9 @@ void loop()                                       // 반복 루틴
   // 주기적으로 메시지 전송 처리
   //----------------------------------------------------------------------------------------
   if (millis() - app.lastMillis > NORMAL_SEND_INTERVAL) {  
-    send_sensor_value();                        // 센서 값 송신
-    app.lastMillis = millis();                  // 현재 시각 업데이트
-  }  
+    send_sensor_value();                          // 센서 값 송신
+    app.lastMillis = millis();                    // 현재 시각 업데이트
+  }
 
   //----------------------------------------------------------------------------------------
   // 동작 상태 LED 깜밖이기
@@ -105,14 +104,14 @@ void do_sensing_process()                         // 센싱 처리 함수
 //==========================================================================================
 { 
   //----------------------------------------------------------------------------------------
-  // 조도 값 센싱하기; CDS 센서
+  // 태양광 센서 센싱하기
   //----------------------------------------------------------------------------------------  
   Solar_Voltage_Value = analogRead(A3);           // 태양광 센서 읽기
   if(Solar_Voltage_Value > Solar_Max)
     Solar_Max = Solar_Voltage_Value;
   
   //----------------------------------------------------------------------------------------
-  // 초음파 측정
+  // 모터 발전기 센싱하기
   //----------------------------------------------------------------------------------------  
   Windturbine_Voltage_Value = analogRead(A5);
   if(Windturbine_Voltage_Value > Wind_Max)
@@ -127,7 +126,7 @@ void do_automatic_process()                       // 자동화 처리 함수
 //------------------------------------------------------------------------------------------
 {  
   //----------------------------------------------------------------------------------------  
-  // 가로등 모듈의 LED 제어
+  // 신재생 에너지 모듈 OLED 제어
   //----------------------------------------------------------------------------------------  
   char text1[32] = "S: ";
   char value1[32];   
@@ -144,9 +143,9 @@ void do_automatic_process()                       // 자동화 처리 함수
   strcat(text2," V");
 
   delay(10);
-  app.oled.setLine(1,"* ECO Energy *");               // OLED 첫 번째 줄 : 시스템 이름
-  app.oled.setLine(2,text1);                          // OLED 두 번째 줄 : 태양광 발전량
-  app.oled.setLine(3,text2);                          // OLED 세 번째 줄 : 풍력 발전량
+  app.oled.setLine(1,"* ECO Energy *");           // OLED 첫 번째 줄 : 시스템 이름
+  app.oled.setLine(2,text1);                      // OLED 두 번째 줄 : 태양광 발전량
+  app.oled.setLine(3,text2);                      // OLED 세 번째 줄 : 풍력 발전량
   app.oled.display();
 }
 
@@ -155,11 +154,11 @@ void do_automatic_process()                       // 자동화 처리 함수
 void send_sensor_value()                          // 센서 값 송신 함수
 //==========================================================================================
 { 
-  // 예시 {"distance":88.08,"brightness":2914}
+  // 예시 {"Solar":1.08,"Windturbine":0.53, "Solar_Max":2.14, "Wind_Max":0.98}
   
   DynamicJsonDocument doc(256);                   // json 
   doc["Solar"] = app.etboard.round2(Solar_Voltage_Value*c_Value); // 거리 값 송신, 소수점 2자리
-  doc["Windturbine"] = app.etboard.round2(Windturbine_Voltage_Value*c_Value);           // 조도 값 송신
+  doc["Windturbine"] = app.etboard.round2(Windturbine_Voltage_Value*c_Value); // 조도 값 송신
   doc["Solar_Max"] = app.etboard.round2(Solar_Max*c_Value);
   doc["Wind_Max"] = app.etboard.round2(Wind_Max*c_Value);
 
