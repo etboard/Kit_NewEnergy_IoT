@@ -1,5 +1,5 @@
 /******************************************************************************************
- * FileName     : Renewable_Energy_IoT
+ * FileName     : NewEnergy_IoT
  * Description  : 이티보드 스마트 신재생 에너지 코딩 키트(IoT)
  * Author       : SCS
  * Created Date : 2022.08.18
@@ -8,7 +8,7 @@
  * Modified     : 
 ******************************************************************************************/
 const char* board_hardware_verion = "ETBoard_V1.1";
-const char* board_firmware_verion = "smartLgt_0.91";
+const char* board_firmware_verion = "smartNewEnergy_0.91";
 
 //================================================-=========================================
 // 응용 프로그램 구성 사용하기                       
@@ -30,8 +30,8 @@ APP_CONFIG app;
 float Solar_Voltage_Value;                        // 태양광 발전기 값(V)
 float Windturbine_Voltage_Value;                  // 풍력 발전기 값(V)
 const double c_Value = 0.001221245421;
-float Solar_Max = 0;
-float Wind_Max = 0;
+float Solar_Max = 0;                              // 태양광 발전기 최대값 
+float Wind_Max = 0;                               // 풍력 발전기 최대값
 
 
 //==========================================================================================
@@ -42,7 +42,7 @@ void setup()                                      // 설정 함수
 {
   app.setup();                                    // 응용 프로그램 기본 설정
   custom_setup();                                 // 사용자 맞춤형 설정
-  app.oled.setup();
+  app.oled.setup();                               // OLED 기본 설정
 }
 
 
@@ -55,8 +55,8 @@ void custom_setup()                               // 사용자 맞춤형 설정 
   //----------------------------------------------------------------------------------------
   // 초음파 센서 핀 설정                            
   //----------------------------------------------------------------------------------------
-  pinMode(SDA, INPUT);  
-  pinMode(SCL, INPUT);                            // OLED 통신핀 기능 설정
+  pinMode(SDA, INPUT);                            // OLED 통신핀 기능 설정
+  pinMode(SCL, INPUT);                            // 
 }
 
 
@@ -113,7 +113,7 @@ void do_sensing_process()                         // 센싱 처리 함수
   //----------------------------------------------------------------------------------------
   // 모터 발전기 센싱하기
   //----------------------------------------------------------------------------------------  
-  Windturbine_Voltage_Value = analogRead(A5);
+  Windturbine_Voltage_Value = analogRead(A5);     // 모터 발전기 읽기
   if(Windturbine_Voltage_Value > Wind_Max)
     Wind_Max = Windturbine_Voltage_Value;
 }
