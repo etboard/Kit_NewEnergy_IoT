@@ -30,6 +30,8 @@ APP_CONFIG app;
 float Solar_Voltage_Value;                          // 태양광 발전기 값(V)
 float Windturbine_Voltage_Value;                    // 풍력 발전기 값(V)
 const double c_Value = 0.001221245421;
+float Solar_Max = 0;
+float Wind_Max = 0;
 
 
 //==========================================================================================
@@ -106,11 +108,15 @@ void do_sensing_process()                         // 센싱 처리 함수
   // 조도 값 센싱하기; CDS 센서
   //----------------------------------------------------------------------------------------  
   Solar_Voltage_Value = analogRead(A3);           // 태양광 센서 읽기
+  if(Solar_Voltage_Value > Solar_Max)
+    Solar_Max = Solar_Voltage_Value;
   
   //----------------------------------------------------------------------------------------
   // 초음파 측정
   //----------------------------------------------------------------------------------------  
   Windturbine_Voltage_Value = analogRead(A5);
+  if(Windturbine_Voltage_Value > Wind_Max)
+    Wind_Max = Windturbine_Voltage_Value;
 }
 
 
@@ -154,6 +160,8 @@ void send_sensor_value()                          // 센서 값 송신 함수
   DynamicJsonDocument doc(256);                   // json 
   doc["Solar"] = app.etboard.round2(Solar_Voltage_Value*c_Value); // 거리 값 송신, 소수점 2자리
   doc["Windturbine"] = app.etboard.round2(Windturbine_Voltage_Value*c_Value);           // 조도 값 송신
+  doc["Solar_Max"] = app.etboard.round2(Solar_Max*c_Value);
+  doc["Wind_Max"] = app.etboard.round2(Wind_Max*c_Value);
 
   String output;                                  // 문자열 변수
   serializeJson(doc, output);                     // json을 문자열로 변환
