@@ -102,7 +102,7 @@ void do_sensing_process()                         // 센싱 처리 함수
   // 태양광 센서 센싱하기
   //----------------------------------------------------------------------------------------  
   Solar_Voltage_Value = analogRead(A3);           // 태양광 센서 읽기
-  if(Solar_Voltage_Value > Solar_Max)
+  if(Solar_Voltage_Value > Solar_Max)             
     Solar_Max = Solar_Voltage_Value;
   
   //----------------------------------------------------------------------------------------
