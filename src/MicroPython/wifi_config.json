@@ -1,0 +1,9 @@
+{
+    "config version": "2024.08.24 01:06:49",
+    "wifi_ssid": "WiFi_이름",
+    "wifi_password": "WiFi_비밀번호",
+    "mqtt_server": "broker.hivemq.com",
+    "mqtt_port": "1883",
+    "mqtt_user": "",
+    "mqtt_pass": ""
+}
