@@ -7,6 +7,8 @@
  * Modified     : 2022.08.19 : LSC
  * Modified     : 2022.12.28 : YSY : 변수 명명법 통일
  * Modified     : 2024.08.29 : PEJ : 프로그램 구조 변경
+ * Modified     : 2024.09.02 : PEJ : 메시지 key 변경
+ * Modified     : 2024.09.02 : PEJ : 메시지 수신 함수 추가
 ******************************************************************************************/
 const char* board_firmware_verion = "newEnergy_0.92";
 
@@ -54,15 +56,15 @@ void et_loop()                                           // 사용자 반복 처
 void do_sensing_process()                                // 센싱 처
 //==========================================================================================
 {
-    float solar_sensor_value = analogRead(solar_pin);    // 태양광 발전 센서 값 읽기
-    solar_power = solar_sensor_value * c_value;          // 전압 보정
-    if(solar_power > solar_max)                          // 최댓값 저장
-        solar_max = solar_power;
+  float solar_sensor_value = analogRead(solar_pin);    // 태양광 발전 센서 값 읽기
+  solar_power = solar_sensor_value * c_value;          // 전압 보정
+  if(solar_power > solar_max)                          // 최댓값 저장
+    solar_max = solar_power;
 
-    float wind_sensor_value = analogRead(wind_pin);      // 풍력 발전 센서 값 읽기
-    wind_power = wind_sensor_value * c_value;            // 전압 보정
-    if(wind_power > wind_max)                            // 최댓값 저장
-        wind_max = wind_power;
+  float wind_sensor_value = analogRead(wind_pin);      // 풍력 발전 센서 값 읽기
+  wind_power = wind_sensor_value * c_value;            // 전압 보정
+  if(wind_power > wind_max)                            // 최댓값 저장
+    wind_max = wind_power;
 }
 
 
@@ -100,11 +102,19 @@ void display_information()                               // OLED 표시
 void send_message()                                      // 메시지 송신
 //==========================================================================================
 {
-  app.addSensorData("Solar", solar_power);               // 센서 데이터 추가
-  app.addSensorData("Windturbine", wind_power);          // 센서 데이터 추가
-  app.addSensorData("Solar_Max", solar_max);             // 센서 데이터 추가
-  app.addSensorData("Wind_Max", wind_max);               // 센서 데이터 추가
-  app.sendSensorData();                                  // 센서 데이터 송신
+  app.add_sensor_data("solar", solar_power);             // 센서 데이터 추가
+  app.add_sensor_data("wind", wind_power);               // 센서 데이터 추가
+  app.add_sensor_data("solar_max", solar_max);           // 센서 데이터 추가
+  app.add_sensor_data("wind_max", wind_max);             // 센서 데이터 추가
+  app.send_sensor_data();                                // 센서 데이터 송신
+}
+
+
+//==========================================================================================
+void recv_message()                                      // 메시지 수신
+//==========================================================================================
+{
+  // 메시지를 수신받으면 처리할 동작을 작성하세요.
 }
 
 

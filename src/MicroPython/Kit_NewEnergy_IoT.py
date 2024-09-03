@@ -3,7 +3,8 @@
 # Description  : 
 # Author       : 박은정
 # Created Date : 2024.08.29 : PEJ
-# Reference    : 
+# Reference    :
+# Modified     : 2024.08.30 : PEJ : 메시지 key 변경
 # ******************************************************************************************
 board_firmware_verion = "newEnergy_0.92";
 
@@ -104,10 +105,10 @@ def display_information():                               # OLED 표시
 def send_message():                                      # 메시지 송신
 #===========================================================================================
     global solar_power, wind_power, solar_max, wind_max
-    app.add_sensor_data("Solar", solar_power);           # 센서 데이터 추가
-    app.add_sensor_data("Windturbine", wind_power);      # 센서 데이터 추가
-    app.add_sensor_data("Solar_Max", solar_max);         # 센서 데이터 추가
-    app.add_sensor_data("Wind_Max", wind_max);           # 센서 데이터 추가
+    app.add_sensor_data("solar", solar_power);           # 센서 데이터 추가
+    app.add_sensor_data("wind", wind_power);             # 센서 데이터 추가
+    app.add_sensor_data("solar_max", solar_max);         # 센서 데이터 추가
+    app.add_sensor_data("wind_max", wind_max);           # 센서 데이터 추가
     app.send_sensor_data();                              # 센서 데이터 송신
 
 
